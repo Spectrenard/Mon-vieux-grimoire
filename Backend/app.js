@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-const bookRoutes = require("./routes/books");
+const bookRoutes = require("./routes/book");
 const userRoutes = require("./routes/user");
 
 mongoose
@@ -10,8 +10,8 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("Connexion à MongoDB réussie !"))
-  .catch(() => console.log("Connexion à MongoDB échouée !"));
+  .then(() => console.log("Connexion à mongoDb réussie!"))
+  .catch(() => console.log("Connexion à mongoDb échouée!"));
 
 const app = express();
 
