@@ -56,7 +56,7 @@ exports.modifyBook = (req, res, next) => {
 // Supprimer un livre
 exports.deleteBook = (req, res, next) => {
   Book.deleteOne({ _id: req.params.id })
-    .then(() => res.status(200).json({ message: "Livre supprimé" }))
+    .then(() => res.status(200).json({ message: "Livre suuupprimé" }))
     .catch((error) => res.status(400).json({ error }));
 };
 
