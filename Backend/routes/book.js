@@ -12,9 +12,9 @@ router.put("/:id", auth, multer, bookCtrl.modifyBook);
 
 router.delete("/:id", auth, bookCtrl.deleteBook);
 
-router.get("/:id", bookCtrl.getOneBook);
-
 router.get("/bestrating", bookCtrl.bestRatings); // Route pour obtenir les 3 meilleurs livres
+
+router.get("/:id", bookCtrl.getOneBook);
 
 router.post("/:id/rating", auth, bookCtrl.rateOneBook); // Route pour noter un livre
 

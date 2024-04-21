@@ -1,5 +1,4 @@
 const Book = require("../models/Book");
-const fs = require("fs");
 
 // Créer un livre
 exports.createBook = (req, res, next) => {
@@ -78,15 +77,13 @@ exports.getAllBooks = (req, res, next) => {
 // Renvoie un tableau des 3 livres de la base de données ayant la meilleure note moyenne.
 exports.bestRatings = (req, res, next) => {
   Book.find()
-    .sort({ averageRating: -1 }) // Trie les livres par note moyenne décroissante.
-    .limit(3) // Limite le résultat aux 3 meilleurs livres.
+    .sort({ averageRating: -1 })
+    .limit(3)
     .then((books) => {
-      // Envoie le tableau des livres avec un statut 200.
       res.status(200).json(books);
     })
     .catch((error) => {
-      // En cas d'erreur, renvoie un statut 400 avec l'erreur.
-      res.status(400).json({ error });
+      res.status(500).json({ error: "Internal server error" });
     });
 };
 
