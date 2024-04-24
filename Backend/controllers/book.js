@@ -18,7 +18,7 @@ exports.createBook = (req, res, next) => {
   book
     .save()
     .then(() => {
-      res.status(201).json({ message: "Objet enregistré !" });
+      res.status(201).json({ message: "Livre enregistré !" });
     })
     .catch((error) => {
       res.status(400).json({ error });
@@ -118,20 +118,16 @@ exports.rateOneBook = (req, res, next) => {
   Book.findOne({ _id: req.params.id })
     .then((book) => {
       if (!book) {
-        // Si le livre n'est pas trouvé, renvoie un message d'erreur.
         return res.status(400).json({ message: "Livre non trouvé! " });
       }
       if (book.userId === req.auth.userId) {
-        // Empêche l'utilisateur de noter son propre livre.
         return res.status(401).json({ message: "Unauthorized" });
       }
 
-      // Vérifie si l'utilisateur a déjà noté le livre.
       const hasAlreadyRated = book.ratings.some(
         (rating) => rating.userId.toString() === userId
       );
       if (hasAlreadyRated) {
-        // Si oui, empêche une nouvelle notation.
         return res
           .status(400)
           .json({ message: "L'utilisateur a déjà noté ce livre" });
@@ -139,12 +135,19 @@ exports.rateOneBook = (req, res, next) => {
 
       // Ajoute la nouvelle note au tableau des notes du livre.
       book.ratings.push({ userId, grade });
-      // Calcule la nouvelle moyenne des notes.
+
+      // Recalcul de la moyenne des notes.
       const totalGrade = book.ratings.reduce(
         (accumulator, currentValue) => accumulator + currentValue.grade,
         0
       );
-      book.averageRating = totalGrade / book.ratings.length;
+      const averageRating = totalGrade / book.ratings.length;
+
+      // Limite la moyenne à un seul chiffre après la virgule
+      const roundedAverageRating = parseFloat(averageRating.toFixed(1));
+
+      // Mise à jour de la moyenne dans le livre.
+      book.averageRating = roundedAverageRating;
 
       // Sauvegarde les modifications dans la base de données.
       book
