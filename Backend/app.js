@@ -2,12 +2,14 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const path = require("path");
+require("dotenv").config(); // Charge les variables d'environnement à partir du fichier .env
 
 const bookRoutes = require("./routes/book");
 const userRoutes = require("./routes/user");
 
 mongoose
-  .connect("mongodb+srv://grimoire:grimoire61@cluster0.qbw5uzm.mongodb.net/", {
+  .connect(process.env.MONGODB_URI, {
+    // Utilisez process.env pour accéder aux variables d'environnement
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
