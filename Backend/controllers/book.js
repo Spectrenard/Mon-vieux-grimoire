@@ -46,7 +46,14 @@ exports.modifyBook = (req, res, next) => {
           { _id: req.params.id },
           { ...bookObject, _id: req.params.id }
         )
-          .then(() => res.status(200).json({ message: "Livre modifié!" }))
+          .then(() => {
+            // Supprime l'ancienne image
+            if (req.file && book.imageUrl) {
+              const imagePath = book.imageUrl.split("/images/")[1];
+              fs.unlinkSync(`images/${imagePath}`);
+            }
+            res.status(200).json({ message: "Livre modifié!" });
+          })
           .catch((error) => res.status(401).json({ error }));
       }
     })
